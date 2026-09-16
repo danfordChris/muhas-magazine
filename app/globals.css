@@ -1,0 +1,185 @@
+@import "tailwindcss";
+
+/* ============================================================
+   MUHAS Review — design tokens
+   Palette taken from the MUHAS crest and muhas.ac.tz:
+   navy #001C38 · red #C60100 · crest green #1F7A4C · gold #C9922E
+   ============================================================ */
+
+:root {
+  --paper: #fbf8f3;
+  --paper-2: #f3eee5;
+  --ink: #141b22;
+  --ink-2: #4a5560;
+  --ink-3: #7a8590;
+  --rule: #d9d2c6;
+  --navy: #001c38;
+  --red: #c60100;
+  --gold: #c9922e;
+  --green: #1f7a4c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0e1419;
+    --paper-2: #141c23;
+    --ink: #ece7de;
+    --ink-2: #a8b2bb;
+    --ink-3: #7a8590;
+    --rule: #28323b;
+    --navy: #04121f;
+    --red: #ff5a4d;
+    --gold: #e0b25c;
+    --green: #3fa773;
+  }
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-rule: var(--rule);
+  --color-navy: var(--navy);
+  --color-red: var(--red);
+  --color-gold: var(--gold);
+  --color-green: var(--green);
+
+  --font-serif: var(--font-playfair), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    line-height: 1.72;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  :focus-visible {
+    outline: 2.5px solid var(--red);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  ::selection {
+    background: var(--gold);
+    color: var(--navy);
+  }
+}
+
+@layer utilities {
+  /* editorial drop cap on the Vice Chancellor's letter */
+  .dropcap::first-letter {
+    float: left;
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 3.9em;
+    line-height: 0.8;
+    margin: 0.06em 0.1em 0 0;
+    color: var(--red);
+  }
+
+  /* cover gradient: keeps the wordmark legible over bright grass */
+  .cover-scrim {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(0, 20, 40, 0.9) 0%,
+        rgba(0, 20, 40, 0.5) 22%,
+        rgba(0, 20, 40, 0.44) 44%,
+        rgba(0, 15, 32, 0.88) 74%,
+        rgba(0, 12, 26, 0.97) 100%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(0, 16, 34, 0.82) 0%,
+        rgba(0, 16, 34, 0.5) 38%,
+        rgba(0, 16, 34, 0) 78%
+      );
+  }
+  .cover-shadow {
+    text-shadow: 0 1px 16px rgba(0, 12, 26, 0.85), 0 1px 3px rgba(0, 12, 26, 0.7);
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* scroll reveal — applied by ScrollEffects, inert without JS */
+  .rv {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  .rv.is-in {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.66s ease, transform 0.66s cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .rv,
+  .rv.is-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---------- print: an actual magazine ---------- */
+@media print {
+  :root {
+    --paper: #fff;
+    --paper-2: #fff;
+    --ink: #000;
+    --ink-2: #222;
+    --ink-3: #444;
+    --rule: #bbb;
+    --navy: #fff;
+  }
+  [data-print-hide] {
+    display: none !important;
+  }
+  [data-cover] {
+    min-height: 96vh;
+    page-break-after: always;
+  }
+  [data-sheet] {
+    padding-block: 22pt !important;
+    border-top: none !important;
+  }
+  [data-invert] {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  [data-invert] * {
+    color: #000 !important;
+    border-color: #bbb !important;
+  }
+  [data-keep] {
+    break-inside: avoid;
+  }
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+  .rv {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  a {
+    text-decoration: none;
+  }
+}
